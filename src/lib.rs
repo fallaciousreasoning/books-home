@@ -1,9 +1,13 @@
 #![forbid(unsafe_code)]
 #![cfg_attr(not(debug_assertions), deny(warnings))] // Forbid warnings in release builds
 #![warn(clippy::all, rust_2018_idioms)]
+use eframe;
 
 mod app;
 pub use app::BooksHome;
+
+mod book_cover;
+pub use book_cover::{BookDetails,book_cover};
 
 // ----------------------------------------------------------------------------
 // When compiling for web:

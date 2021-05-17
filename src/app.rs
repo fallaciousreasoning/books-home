@@ -1,17 +1,21 @@
 use eframe::{egui, epi};
 
+use crate::{BookDetails, book_cover};
+
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
 #[cfg_attr(feature = "persistence", derive(serde::Deserialize, serde::Serialize))]
 pub struct BooksHome {
     filter: String,
-    value: f32,
+    books: Vec<String>
 }
 
 impl Default for BooksHome {
     fn default() -> Self {
         Self {
             filter: "".to_owned(),
-            value: 2.7,
+            books: vec![
+                "assets/The Count of Monte Cristo, Illu - Alexandre Dumas.epub".to_owned()
+            ]
         }
     }
 }
@@ -38,7 +42,7 @@ impl epi::App for BooksHome {
     fn update(&mut self, ctx: &egui::CtxRef, frame: &mut epi::Frame<'_>) {
         let BooksHome {
             filter,
-            value,
+            books,
         } = self;
 
         egui::CentralPanel::default().show(ctx, |ui| {
@@ -49,6 +53,10 @@ impl epi::App for BooksHome {
                 ui.text_edit_singleline(filter);
             });
             ui.separator();
+            book_cover(ui, BookDetails {
+                title: "A book".to_owned(),
+                progress: 0.5
+            });
         });
     }
 }
