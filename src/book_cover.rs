@@ -15,12 +15,16 @@ pub fn book_cover(ui: &mut egui::Ui, book: BookDetails) {
     let (rect, mut response) = ui.allocate_exact_size(desired_size, egui::Sense::click());
     let visuals = ui.style().interact(&response);
     let rect = rect.expand(visuals.expansion);
-    ui.painter().rect(rect, visuals.corner_radius, visuals.bg_fill, visuals.bg_stroke);
-    ui.painter().rect_filled(
-        egui::Rect::from_min_size(
-            rect.left_top(), 
-            egui::vec2(width*book.progress, 10.)),
-        visuals.corner_radius,
-        egui::Color32::BLACK);
-    ui.label(book.title);
+    let corner_radius = visuals.corner_radius;
+    ui.painter().rect(rect, corner_radius, visuals.bg_fill, visuals.bg_stroke);
+    ui.allocate_ui_at_rect(rect, |ui| {
+        ui.with_layout(egui::Layout::bottom_up(egui::Align::Center), |ui| {
+            let (_, progress_rect) = ui.allocate_space(egui::vec2(width, 10.));
+            ui.painter().rect_filled(
+                progress_rect,
+                corner_radius,
+                egui::Color32::BLACK);
+            ui.label(book.title);
+        });
+    });
 }
