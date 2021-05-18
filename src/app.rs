@@ -1,4 +1,4 @@
-use eframe::{egui, epi};
+use eframe::{egui::{self, Layout}, epi};
 use std::io;
 use std::fs::{self, DirEntry};
 
@@ -64,14 +64,18 @@ impl epi::App for BooksHome {
             });
             ui.separator();
 
-            let filter = filter.to_lowercase();
-            let filtered_books = books.iter().filter(|b| b.to_lowercase().matches(&filter).next() != None);
-            for book in filtered_books {
-                book_cover(ui, BookDetails {
-                    title: book.to_string(),
-                    progress: 0.5
-                });
-            }
+            let layout = Layout::left_to_right()
+                .with_main_wrap(true);
+            ui.with_layout(layout, |ui| {
+                let filter = filter.to_lowercase();
+                let filtered_books = books.iter().filter(|b| b.to_lowercase().matches(&filter).next() != None);
+                for book in filtered_books {
+                    book_cover(ui, BookDetails {
+                        title: book.to_string(),
+                        progress: 0.5
+                    });
+                }
+            });
         });
     }
 }
