@@ -1,31 +1,35 @@
-use eframe::{egui::{self, Layout, Sense}, epi};
-use std::io;
+use eframe::{
+    egui::{self, Layout, Sense},
+    epi,
+};
 use std::fs::{self, DirEntry};
+use std::io;
 
-use crate::{BookDetails, book_cover};
+use crate::{book_cover, BookDetails};
 
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
 #[cfg_attr(feature = "persistence", derive(serde::Deserialize, serde::Serialize))]
 pub struct BooksHome {
     filter: String,
-    books: Vec<String>
+    books: Vec<String>,
 }
 
 impl Default for BooksHome {
     fn default() -> Self {
         let files = match fs::read_dir("assets") {
             Ok(dir) => {
-                let result = dir.filter_map(|f| f.ok())
+                let result = dir
+                    .filter_map(|f| f.ok())
                     .filter_map(|f| f.path().into_os_string().into_string().ok())
                     .collect();
                 result
-            },
-            Err(_) => Vec::<String>::new()
+            }
+            Err(_) => Vec::<String>::new(),
         };
-        
+
         Self {
             filter: "".to_owned(),
-            books: files
+            books: files,
         }
     }
 }
@@ -50,10 +54,7 @@ impl epi::App for BooksHome {
     /// Called each time the UI needs repainting, which may be many times per second.
     /// Put your widgets into a `SidePanel`, `TopPanel`, `CentralPanel`, `Window` or `Area`.
     fn update(&mut self, ctx: &egui::CtxRef, frame: &mut epi::Frame<'_>) {
-        let BooksHome {
-            filter,
-            books,
-        } = self;
+        let BooksHome { filter, books } = self;
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Books");
@@ -64,18 +65,19 @@ impl epi::App for BooksHome {
             });
             ui.separator();
 
-            let layout = Layout::left_to_right()
-                .with_main_wrap(false);
             ui.horizontal_wrapped(|ui| {
                 let filter = filter.to_lowercase();
-                let filtered_books = books.iter().filter(|b| b.to_lowercase().matches(&filter).next() != None);
+                let filtered_books = books
+                    .iter()
+                    .filter(|b| b.to_lowercase().matches(&filter).next() != None);
                 for book in filtered_books {
-                        book_cover(ui, BookDetails {
+                    book_cover(
+                        ui,
+                        BookDetails {
                             title: book.to_string(),
-                            progress: 0.5
-                        });
-
-                    // ui.allocate_exact_size(egui::vec2(200., 300.), Sense::hover());
+                            progress: 0.5,
+                        },
+                    );
                 }
             });
         });
