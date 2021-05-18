@@ -53,10 +53,15 @@ impl epi::App for BooksHome {
                 ui.text_edit_singleline(filter);
             });
             ui.separator();
-            book_cover(ui, BookDetails {
-                title: "A book".to_owned(),
-                progress: 0.5
-            });
+
+            let filter = filter.to_lowercase();
+            let filtered_books = books.iter().filter(|b| b.to_lowercase().matches(&filter).next() != None);
+            for book in filtered_books {
+                book_cover(ui, BookDetails {
+                    title: book.to_string(),
+                    progress: 0.5
+                });
+            }
         });
     }
 }
