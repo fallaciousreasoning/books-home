@@ -28,7 +28,8 @@ pub fn book_cover(ui: &mut egui::Ui, book: BookDetails) {
                     egui::Rect::from_min_size(progress_rect.min, egui::vec2(width*book.progress, progress_rect.height())), 
                     corner_radius, 
                     egui::Color32::BLACK);
-            ui.allocate_ui_at_rect(rect.shrink(ui.spacing().indent), |ui| {
+            ui.allocate_ui_at_rect(rect.shrink(ui.spacing().item_spacing.x), |ui| {
+                ui.add_space(ui.spacing().item_spacing.y);
                 ui.label(book.title);
             });
         });
