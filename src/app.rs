@@ -1,4 +1,6 @@
 use eframe::{egui, epi};
+use std::io;
+use std::fs::{self, DirEntry};
 
 use crate::{BookDetails, book_cover};
 
@@ -11,11 +13,19 @@ pub struct BooksHome {
 
 impl Default for BooksHome {
     fn default() -> Self {
+        let files = match fs::read_dir("assets") {
+            Ok(dir) => {
+                let result = dir.filter_map(|f| f.ok())
+                    .filter_map(|f| f.path().into_os_string().into_string().ok())
+                    .collect();
+                result
+            },
+            Err(_) => Vec::<String>::new()
+        };
+        
         Self {
             filter: "".to_owned(),
-            books: vec![
-                "assets/The Count of Monte Cristo, Illu - Alexandre Dumas.epub".to_owned()
-            ]
+            books: files
         }
     }
 }
