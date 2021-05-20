@@ -16,7 +16,11 @@ pub struct BooksHome {
 
 impl Default for BooksHome {
     fn default() -> Self {
-        let files = match fs::read_dir("assets") {
+        let mut test_files: Vec<String> = vec!["Test", "Foo", "Bar", "Hello", "World", "Baz"]
+            .iter()
+            .map(|s| s.to_string())
+            .collect();
+        let mut files = match fs::read_dir("assets") {
             Ok(dir) => {
                 let result = dir
                     .filter_map(|f| f.ok())
@@ -26,6 +30,7 @@ impl Default for BooksHome {
             }
             Err(_) => Vec::<String>::new(),
         };
+        files.append(&mut test_files);
 
         Self {
             filter: "".to_owned(),
