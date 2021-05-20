@@ -55,8 +55,8 @@ impl epi::App for BooksHome {
     /// Put your widgets into a `SidePanel`, `TopPanel`, `CentralPanel`, `Window` or `Area`.
     fn update(&mut self, ctx: &egui::CtxRef, frame: &mut epi::Frame<'_>) {
         let BooksHome { filter, books } = self;
-
         egui::CentralPanel::default().show(ctx, |ui| {
+            ui.visuals_mut().dark_mode = false;
             ui.heading("Books");
             ui.separator();
             ui.horizontal(|ui| {
