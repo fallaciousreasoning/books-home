@@ -1,5 +1,5 @@
 [package]
-name = "egui_tests"
+name = "books_home"
 version = "0.1.0"
 authors = ["Jay Harris <jay.harris@outlook.co.nz>"]
 edition = "2018"

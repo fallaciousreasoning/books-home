@@ -5,6 +5,6 @@
 // When compiling natively:
 #[cfg(not(target_arch = "wasm32"))]
 fn main() {
-    let app = egui_tests::BooksHome::default();
+    let app = books_home::BooksHome::default();
     eframe::run_native(Box::new(app));
 }

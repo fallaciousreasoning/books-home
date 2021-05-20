@@ -96,6 +96,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0d8c1fef690941d3e7788d328517591fecc684c084084702d6ff1641e993699a"
 
 [[package]]
+name = "books_home"
+version = "0.1.0"
+dependencies = [
+ "eframe",
+ "serde",
+]
+
+[[package]]
 name = "bumpalo"
 version = "3.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -431,14 +439,6 @@ dependencies = [
  "serde",
  "ureq",
  "webbrowser",
-]
-
-[[package]]
-name = "egui_tests"
-version = "0.1.0"
-dependencies = [
- "eframe",
- "serde",
 ]
 
 [[package]]
