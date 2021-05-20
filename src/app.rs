@@ -1,7 +1,4 @@
-use eframe::{
-    egui::{self, Layout, Sense},
-    epi,
-};
+use eframe::{egui::{self, Layout, Sense, Visuals}, epi};
 use std::fs::{self, DirEntry};
 use std::io;
 
@@ -54,6 +51,10 @@ impl epi::App for BooksHome {
     #[cfg(feature = "persistence")]
     fn save(&mut self, storage: &mut dyn epi::Storage) {
         epi::set_value(storage, epi::APP_KEY, self);
+    }
+
+    fn setup(&mut self, ctx: &egui::CtxRef) {
+        ctx.set_visuals(Visuals::light());
     }
 
     /// Called each time the UI needs repainting, which may be many times per second.
