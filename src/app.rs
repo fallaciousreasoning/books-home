@@ -65,7 +65,6 @@ impl epi::App for BooksHome {
             });
             ui.separator();
 
-            ui.horizontal_wrapped(|ui| {
                 let filter = filter.to_lowercase();
                 let filtered_books: Vec<BookDetails> = books
                     .iter()
@@ -74,7 +73,7 @@ impl epi::App for BooksHome {
                         title: path.to_string(),
                         progress: 0.5
                     }).collect();
-                paginated(ui, filtered_books, book_cover);
+                paginated(ui, egui::vec2(200. / 3. * 2., 200.), filtered_books, book_cover);
                 // for book in filtered_books {
                 //     book_cover(
                 //         ui,
@@ -84,7 +83,6 @@ impl epi::App for BooksHome {
                 //         },
                 //     );
                 // }
-            });
         });
     }
 }
