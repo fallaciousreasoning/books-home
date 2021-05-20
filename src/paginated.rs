@@ -18,11 +18,11 @@ type RenderItem<T> = fn(&mut Ui, &T) -> ();
 
 pub fn paginated<T>(ui: &mut Ui, item_size: Vec2, items: Vec<T>, render_item: RenderItem<T>) {
     let top_left = ui.available_rect_before_wrap().min;
-    let space = ui.available_size();
+    let space = ui.available_rect_before_wrap().size();
 
     let spacing = ui.spacing().item_spacing.x;
     let width_in_tiles = max((space.x / (item_size.x + spacing)).floor() as i32, 1);
-    let height_in_tiles = max((space.y / (item_size.x + spacing)).floor() as i32, 1);
+    let height_in_tiles = max((space.y / (item_size.y + spacing)).floor() as i32, 1);
 
     let align = Alignment::SpaceAround;
 
