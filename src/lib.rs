@@ -8,8 +8,8 @@ pub use app::BooksHome;
 mod book_cover;
 pub use book_cover::{BookDetails,book_cover};
 
-mod paginated;
-pub use paginated::{paginated};
+mod grid;
+pub use grid::{grid,RenderItem};
 
 // ----------------------------------------------------------------------------
 // When compiling for web:

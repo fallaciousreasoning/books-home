@@ -14,15 +14,28 @@ pub struct GridConfig {
     item_size: Vec2,
 }
 
-type RenderItem<T> = fn(&mut Ui, &T) -> ();
+pub type RenderItem<T> = fn(&mut Ui, &T) -> ();
 
-pub fn paginated<T>(ui: &mut Ui, item_size: Vec2, items: Vec<T>, render_item: RenderItem<T>) {
-    let top_left = ui.available_rect_before_wrap().min;
-    let space = ui.available_rect_before_wrap().size();
+pub fn grid<T>(ui: &mut Ui, item_size: Vec2, items: Vec<T>, render_item: RenderItem<T>) {
+    let controls_height = ui.spacing().interact_size.y + ui.spacing().item_spacing.y;
 
+    let mut top_left = ui.available_rect_before_wrap().min;
+    top_left.y += controls_height;
+
+    let mut space = ui.available_rect_before_wrap().size();
+    space.y -= controls_height;
+    
     let spacing = ui.spacing().item_spacing.x;
     let width_in_tiles = max((space.x / (item_size.x + spacing)).floor() as i32, 1);
     let height_in_tiles = max((space.y / (item_size.y + spacing)).floor() as i32, 1);
+    let items_per_page = width_in_tiles*height_in_tiles;
+    let pages = max((items.len() as f32 / items_per_page as f32).ceil() as i32, 1);
+
+    ui.horizontal(|ui| {
+        ui.button(" < ");
+        ui.label(format!("Showing page 1 of {}", pages));
+        ui.button(" > ");
+    });
 
     let align = Alignment::SpaceAround;
 

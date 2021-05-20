@@ -5,7 +5,7 @@ use eframe::{
 use std::fs::{self, DirEntry};
 use std::io;
 
-use crate::{BookDetails, book_cover, paginated};
+use crate::{BookDetails, book_cover, grid};
 
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
 #[cfg_attr(feature = "persistence", derive(serde::Deserialize, serde::Serialize))]
@@ -77,7 +77,7 @@ impl epi::App for BooksHome {
                         title: path.to_string(),
                         progress: 0.5
                     }).collect();
-                paginated(ui, egui::vec2(200. / 3. * 2., 200.), filtered_books, book_cover);
+                grid(ui, egui::vec2(200. / 3. * 2., 200.), filtered_books, book_cover);
                 // for book in filtered_books {
                 //     book_cover(
                 //         ui,
