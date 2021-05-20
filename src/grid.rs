@@ -1,17 +1,12 @@
 use std::cmp::{max, min};
 
-use eframe::egui::{Align, Rect, Sense, Ui, Vec2, pos2, vec2};
+use eframe::egui::{Rect, Ui, Vec2, pos2, vec2};
 
 pub enum Alignment {
     Start,
     End,
     SpaceAround,
     SpaceBetween
-}
-
-pub struct GridConfig {
-    align: Alignment,
-    item_size: Vec2,
 }
 
 pub type RenderItem<T> = fn(&mut Ui, &T) -> ();

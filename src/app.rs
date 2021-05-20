@@ -1,6 +1,5 @@
-use eframe::{egui::{self, Layout, Sense, Visuals}, epi};
-use std::fs::{self, DirEntry};
-use std::io;
+use eframe::{egui::{self, Visuals}, epi};
+use std::fs::{self};
 
 use crate::{BookDetails, book_cover, grid};
 
@@ -59,7 +58,7 @@ impl epi::App for BooksHome {
 
     /// Called each time the UI needs repainting, which may be many times per second.
     /// Put your widgets into a `SidePanel`, `TopPanel`, `CentralPanel`, `Window` or `Area`.
-    fn update(&mut self, ctx: &egui::CtxRef, frame: &mut epi::Frame<'_>) {
+    fn update(&mut self, ctx: &egui::CtxRef, _: &mut epi::Frame<'_>) {
         let BooksHome { filter, books } = self;
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Books");
@@ -79,15 +78,6 @@ impl epi::App for BooksHome {
                         progress: 0.5
                     }).collect();
                 grid(ui, egui::vec2(200. / 3. * 2., 200.), filtered_books, book_cover);
-                // for book in filtered_books {
-                //     book_cover(
-                //         ui,
-                //         BookDetails {
-                //             title: book.to_string(),
-                //             progress: 0.5,
-                //         },
-                //     );
-                // }
         });
     }
 }
