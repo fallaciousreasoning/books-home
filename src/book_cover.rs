@@ -5,7 +5,7 @@ pub struct BookDetails {
     pub progress: f32,
 }
 
-pub fn book_cover(ui: &mut egui::Ui, book: BookDetails) {
+pub fn book_cover(ui: &mut egui::Ui, book: &BookDetails) {
     let aspect_ratio = 2. / 3.;
     let height = 200.;
     let width = aspect_ratio * height;
@@ -30,7 +30,7 @@ pub fn book_cover(ui: &mut egui::Ui, book: BookDetails) {
                     egui::Color32::BLACK);
             ui.allocate_ui_at_rect(rect.shrink(ui.spacing().item_spacing.x), |ui| {
                 ui.add_space(ui.spacing().item_spacing.y);
-                ui.label(book.title);
+                ui.label(book.title.clone());
             });
         });
     });

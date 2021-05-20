@@ -5,7 +5,7 @@ use eframe::{
 use std::fs::{self, DirEntry};
 use std::io;
 
-use crate::{book_cover, BookDetails};
+use crate::{BookDetails, book_cover, paginated};
 
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
 #[cfg_attr(feature = "persistence", derive(serde::Deserialize, serde::Serialize))]
@@ -67,18 +67,23 @@ impl epi::App for BooksHome {
 
             ui.horizontal_wrapped(|ui| {
                 let filter = filter.to_lowercase();
-                let filtered_books = books
+                let filtered_books: Vec<BookDetails> = books
                     .iter()
-                    .filter(|b| b.to_lowercase().matches(&filter).next() != None);
-                for book in filtered_books {
-                    book_cover(
-                        ui,
-                        BookDetails {
-                            title: book.to_string(),
-                            progress: 0.5,
-                        },
-                    );
-                }
+                    .filter(|b| b.to_lowercase().matches(&filter).next() != None)
+                    .map(|path| BookDetails {
+                        title: path.to_string(),
+                        progress: 0.5
+                    }).collect();
+                paginated(ui, filtered_books, book_cover);
+                // for book in filtered_books {
+                //     book_cover(
+                //         ui,
+                //         BookDetails {
+                //             title: book.to_string(),
+                //             progress: 0.5,
+                //         },
+                //     );
+                // }
             });
         });
     }
