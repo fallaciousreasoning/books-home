@@ -24,7 +24,7 @@ pub fn paginated<T>(ui: &mut Ui, item_size: Vec2, items: Vec<T>, render_item: Re
     let width_in_tiles = (space.x / (item_size.x + spacing)).floor() as i32;
     let height_in_tiles = (space.y / (item_size.x + spacing)).floor() as i32;
 
-    let align = Alignment::SpaceBetween;
+    let align = Alignment::SpaceAround;
 
     let mut iter = items.iter();
     for row in 0..height_in_tiles {
