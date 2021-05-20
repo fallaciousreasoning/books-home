@@ -1,4 +1,4 @@
-use std::cmp::min;
+use std::cmp::{max, min};
 
 use eframe::egui::{Align, Rect, Sense, Ui, Vec2, pos2, vec2};
 
@@ -21,8 +21,8 @@ pub fn paginated<T>(ui: &mut Ui, item_size: Vec2, items: Vec<T>, render_item: Re
     let space = ui.available_size();
 
     let spacing = ui.spacing().item_spacing.x;
-    let width_in_tiles = (space.x / (item_size.x + spacing)).floor() as i32;
-    let height_in_tiles = (space.y / (item_size.x + spacing)).floor() as i32;
+    let width_in_tiles = max((space.x / (item_size.x + spacing)).floor() as i32, 1);
+    let height_in_tiles = max((space.y / (item_size.x + spacing)).floor() as i32, 1);
 
     let align = Alignment::SpaceAround;
 
