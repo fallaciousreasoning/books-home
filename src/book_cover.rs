@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use eframe::egui::{self};
 
 pub struct BookDetails {
@@ -34,4 +36,11 @@ pub fn book_cover(ui: &mut egui::Ui, book: &BookDetails) {
             });
         });
     });
+
+    if response.clicked() {
+        match open::that(&book.title) {
+            Ok(_) => println!("Opened book!"),
+            Err(err) => println!("Failed to open book {:?}", err)
+        }
+    }
 }
