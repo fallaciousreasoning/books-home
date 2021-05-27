@@ -4,6 +4,7 @@ use eframe::egui::{self};
 
 pub struct BookDetails {
     pub title: String,
+    pub path: String,
     pub author: Option<String>,
     pub progress: f32,
 }
@@ -49,6 +50,12 @@ pub fn book_cover(ui: &mut egui::Ui, book: &BookDetails) {
             ui.allocate_ui_at_rect(rect.shrink(ui.spacing().item_spacing.x), |ui| {
                 ui.add_space(ui.spacing().item_spacing.y);
                 ui.label(book.title.clone());
+                match &book.author {
+                    Some(a) => {
+                        ui.label(a);
+                    },
+                    None => {}
+                }
             });
         });
     });

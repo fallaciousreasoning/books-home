@@ -58,6 +58,7 @@ impl BooksHome {
             
             let info = BookDetails {
                 author: author,
+                path: path.clone(),
                 title: title.clone(),
                 progress: 0.
             };
