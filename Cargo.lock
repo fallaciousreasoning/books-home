@@ -1953,3 +1953,8 @@ dependencies = [
  "thiserror",
  "time",
 ]
+
+[[patch.unused]]
+name = "eframe"
+version = "0.12.0"
+source = "git+https://github.com/emilk/egui?branch=master#e320ef6c64fe85df9c4d793cc73bfabbf7358186"

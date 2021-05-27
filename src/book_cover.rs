@@ -1,6 +1,6 @@
-use std::path::Path;
+use std::{fmt::format, path::Path};
 
-use eframe::egui::{self};
+use eframe::egui::{self, Label};
 
 pub struct BookDetails {
     pub title: String,
@@ -48,11 +48,15 @@ pub fn book_cover(ui: &mut egui::Ui, book: &BookDetails) {
                     corner_radius, 
                     egui::Color32::BLACK);
             ui.allocate_ui_at_rect(rect.shrink(ui.spacing().item_spacing.x), |ui| {
+                ui.set_clip_rect(rect);
                 ui.add_space(ui.spacing().item_spacing.y);
-                ui.label(book.title.clone());
+                ui.add(Label::new(&book.title).heading());
                 match &book.author {
                     Some(a) => {
-                        ui.label(a);
+                        ui.horizontal(|ui| {
+                            ui.add(Label::new("by").italics());
+                            ui.label(a);
+                        });
                     },
                     None => {}
                 }
