@@ -4,7 +4,23 @@ use eframe::egui::{self};
 
 pub struct BookDetails {
     pub title: String,
+    pub author: Option<String>,
     pub progress: f32,
+}
+
+impl BookDetails {
+    pub fn matches(&self, filter: &String) -> bool {
+        let lower_filter = filter.to_lowercase();
+
+        self.title
+            .to_lowercase()
+            .contains(&lower_filter)
+        || self.author
+            .as_ref()
+            .unwrap_or(&String::default())
+            .to_lowercase()
+            .contains(&lower_filter)
+    }
 }
 
 pub fn book_cover(ui: &mut egui::Ui, book: &BookDetails) {

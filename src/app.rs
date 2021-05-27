@@ -1,4 +1,5 @@
 use eframe::{egui::{self, Visuals}, epi};
+use epub::doc::EpubDoc;
 use std::fs::{self};
 
 use crate::{BookDetails, book_cover, grid};
@@ -7,7 +8,8 @@ use crate::{BookDetails, book_cover, grid};
 #[cfg_attr(feature = "persistence", derive(serde::Deserialize, serde::Serialize))]
 pub struct BooksHome {
     filter: String,
-    books: Vec<String>,
+    book_paths: Vec<String>,
+    books: Vec<BookDetails>
 }
 
 impl Default for BooksHome {
@@ -25,7 +27,41 @@ impl Default for BooksHome {
 
         Self {
             filter: "".to_owned(),
-            books: files,
+            book_paths: files,
+            books: Vec::new()
+        }
+    }
+}
+
+impl BooksHome {
+    pub fn load_books(&mut self) {
+        self.books.reserve(self.book_paths.len());
+
+        for path in &self.book_paths {
+            let book = match EpubDoc::new(&path) {
+                Ok(result) => result,
+                Err(_) => continue
+            };
+
+            let title = match book.metadata.get("title") {
+                Some(value) => value.get(0).unwrap_or(path),
+                None => path
+            };
+
+            let author = match book.metadata.get("creator") {
+                Some(value) => match value.get(0) {
+                    Some(value) => Some(value.clone()),
+                    None => None
+                },
+                None => None
+            };
+            
+            let info = BookDetails {
+                author: author,
+                title: title.clone(),
+                progress: 0.
+            };
+            self.books.push(info);
         }
     }
 }
@@ -54,7 +90,7 @@ impl epi::App for BooksHome {
     /// Called each time the UI needs repainting, which may be many times per second.
     /// Put your widgets into a `SidePanel`, `TopPanel`, `CentralPanel`, `Window` or `Area`.
     fn update(&mut self, ctx: &egui::CtxRef, _: &mut epi::Frame<'_>) {
-        let BooksHome { filter, books } = self;
+        let BooksHome { filter, book_paths, books } = self;
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Books");
             ui.separator();
@@ -65,13 +101,10 @@ impl epi::App for BooksHome {
             ui.separator();
 
                 let filter = filter.to_lowercase();
-                let filtered_books: Vec<BookDetails> = books
+                let filtered_books: Vec<&BookDetails> = books
                     .iter()
-                    .filter(|b| b.to_lowercase().matches(&filter).next() != None)
-                    .map(|path| BookDetails {
-                        title: path.to_string(),
-                        progress: 0.5
-                    }).collect();
+                    .filter(|b| b.matches(&filter))
+                    .collect();
                 grid(ui, egui::vec2(200. / 3. * 2., 200.), filtered_books, book_cover);
         });
     }

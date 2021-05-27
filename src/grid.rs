@@ -9,9 +9,9 @@ pub enum Alignment {
     SpaceBetween
 }
 
-pub type RenderItem<T> = fn(&mut Ui, &T) -> ();
+pub type RenderItem<T> = fn(&mut Ui, T) -> ();
 
-pub fn grid<T>(ui: &mut Ui, item_size: Vec2, items: Vec<T>, render_item: RenderItem<T>) {
+pub fn grid<'a, T>(ui: &mut Ui, item_size: Vec2, items: Vec<&'a T>, render_item: RenderItem<&'a T>) {
     let controls_height = ui.spacing().interact_size.y + ui.spacing().item_spacing.y;
 
     let mut top_left = ui.available_rect_before_wrap().min;
@@ -63,7 +63,7 @@ pub fn grid<T>(ui: &mut Ui, item_size: Vec2, items: Vec<T>, render_item: RenderI
             );
             let rect = Rect::from_min_size(start_pos, item_size);
             ui.allocate_ui_at_rect(rect, |ui| {
-                render_item(ui, &item);
+                render_item(ui, item);
             });
         }
     }
